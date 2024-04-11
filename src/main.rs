@@ -17,13 +17,13 @@ fn main() {
         termion::clear::All
     )
     .unwrap();
-    stdout.flush().unwrap();
     write!(
         stdout,
         "{}",
         termion::cursor::Goto(i, 1),
     )
-        .unwrap();
+    .unwrap();
+    stdout.flush().unwrap();
     for c in stdin.keys() {
         //clearing the screen and going to top left corner
         write!(
@@ -36,14 +36,26 @@ fn main() {
 
         //i reckon this speaks for itself
         match c.unwrap() {
-            Key::Ctrl('q') => break,
+            Key::Ctrl('q') => {
+                write!(
+                    stdout, 
+                    "{}", 
+                    termion::clear::All
+                )
+                .unwrap();
+                write!(
+                    stdout,
+                    "{}",
+                    termion::cursor::Goto(1, 1),
+                )
+                .unwrap();
+                break;
+            },
             Key::Char('w') => print!("s"),
             Key::Char('e') => print!("t"),
             Key::Char('r') => print!("r"),
             Key::Char('t') => print!("a"),
-            Key::Char('s') => {
-                print!("o"),
-            }
+            Key::Char('s') => print!("o"),
             Key::Char('d') => print!("i"),
             Key::Char('f') => print!("y"),
             Key::Char('g') => print!("e"),
