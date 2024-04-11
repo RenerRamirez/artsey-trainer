@@ -5,52 +5,26 @@ use termion::raw::IntoRawMode;
 
 fn main() {
     let stdin = stdin();
-    //setting up stdout and going into raw mode
-
     let mut stdout = stdout().into_raw_mode().unwrap();
 
-    //detecting keydown events
     let mut i = 1;
-    write!(
-        stdout, 
-        "{}", 
-        termion::clear::All
-    )
-    .unwrap();
-    write!(
-        stdout,
-        "{}",
-        termion::cursor::Goto(i, 1),
-    )
-    .unwrap();
+    write!(stdout, "{}", termion::clear::All).unwrap();
+    write!(stdout, "{}", termion::cursor::Goto(i, 1)).unwrap();
     stdout.flush().unwrap();
+
+    // each key press fills up the .keys() "buffer"
     for c in stdin.keys() {
-        //clearing the screen and going to top left corner
-        write!(
-            stdout,
-            "{}",
-            termion::cursor::Goto(i, 1),
-        )
-        .unwrap();
+        // move cursor to top-left of the terminal 
+        write!(stdout, "{}", termion::cursor::Goto(i, 1),).unwrap();
+
         i += 1;
 
-        //i reckon this speaks for itself
         match c.unwrap() {
             Key::Ctrl('q') => {
-                write!(
-                    stdout, 
-                    "{}", 
-                    termion::clear::All
-                )
-                .unwrap();
-                write!(
-                    stdout,
-                    "{}",
-                    termion::cursor::Goto(1, 1),
-                )
-                .unwrap();
+                write!(stdout, "{}", termion::clear::All).unwrap();
+                write!(stdout, "{}", termion::cursor::Goto(1, 1)).unwrap();
                 break;
-            },
+            }
             Key::Char('w') => print!("s"),
             Key::Char('e') => print!("t"),
             Key::Char('r') => print!("r"),
@@ -60,24 +34,15 @@ fn main() {
             Key::Char('f') => print!("y"),
             Key::Char('g') => print!("e"),
             Key::Char('x') => {
+                // clear whole screen
                 i = 1;
-                write!( stdout, "{}", termion::clear::All,) .unwrap();
-                write!( stdout, "{}", termion::cursor::Goto(i, 1),) .unwrap();
+                write!(stdout, "{}", termion::clear::All,).unwrap();
+                write!(stdout, "{}", termion::cursor::Goto(i, 1)).unwrap();
             }
             Key::Backspace => {
                 i = 1;
-                write!(
-                    stdout, 
-                    "{}", 
-                    termion::clear::All,
-                )
-                .unwrap();
-                write!(
-                    stdout,
-                    "{}",
-                    termion::cursor::Goto(i, 1),
-                )
-                .unwrap();
+                write!(stdout, "{}", termion::clear::All,).unwrap();
+                write!(stdout, "{}", termion::cursor::Goto(i, 1)).unwrap();
             }
             _ => (),
         }
